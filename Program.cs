@@ -36,7 +36,108 @@
 
             List<Booking> bookings = new List<Booking>();
 
-            //Menü anzeigen
+
+            // Menü anzeigen
             ShowMainMenu(rooms, bookings);
         }
+
+        // Hauptmenü
+        public static void ShowMainMenu(List<Room> rooms, List<Booking> bookings)
+        {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("Willkommen im Hotelbuchungssystem!");
+                Console.WriteLine("1. Zimmer anzeigen");
+                Console.WriteLine("2. Zimmer buchen");
+                Console.WriteLine("3. Zimmer stornieren");
+                Console.WriteLine("4. Belegung anzeigen");
+                Console.WriteLine("5. Verfügbarkeit prüfen");
+                Console.WriteLine("6. Programm beenden");
+                Console.Write("Wählen Sie eine Option: ");
+                var choice = Console.ReadLine();
+
+                switch (choice)
+                {
+                    case "1":
+                        DisplayRooms(rooms);
+                        break;
+                    case "2":
+                        BookRoom(rooms, bookings);
+                        break;
+                    case "3":
+                        CancelBooking(rooms, bookings);
+                        break;
+                    case "4":
+                        ShowOccupancy(bookings);
+                        break;
+                    case "5":
+                        CheckAvailability(rooms);
+                        break;
+                    case "6":
+                        return;
+                    default:
+                        Console.WriteLine("Ungültige Auswahl. Versuchen Sie es erneut.");
+                        break;
+                }
+            }
+        }
+
+        // Zimmer anzeigen
+        public static void DisplayRooms(List<Room> rooms)
+        {
+            Console.Clear();
+            Console.WriteLine("Zimmer im Hotel:");
+            foreach (var room in rooms)
+            {
+                Console.WriteLine($"Zimmernummer: {room.RoomNumber}, Kategorie: {room.Category}, Preis: {room.Price:C}, Status: {(room.IsBooked ? "Gebucht" : "Verfügbar")}");
+            }
+            Console.WriteLine("\nDrücken Sie eine beliebige Taste, um zum Menü zurückzukehren.");
+            Console.ReadKey();
+        }
+
+        // Zimmer buchen
+        public static void BookRoom(List<Room> rooms, List<Booking> bookings)
+        {
+            Console.Clear();
+            Console.WriteLine("Zimmer buchen:");
+            Console.Write("Geben Sie die Zimmernummer ein, die Sie buchen möchten: ");
+            int roomNumber = int.Parse(Console.ReadLine());
+
+            var room = rooms.FirstOrDefault(r => r.RoomNumber == roomNumber && !r.IsBooked);
+            if (room != null)
+            {
+                Console.Write("Geben Sie Ihren Namen ein: ");
+                string guestName = Console.ReadLine();
+
+                Console.Write("Geben Sie das Startdatum der Buchung ein: ");
+                DateTime startDate = DateTime.Parse(Console.ReadLine());
+
+                Console.Write("Geben Sie das Enddatum der Buchung ein: ");
+                DateTime endDate = DateTime.Parse(Console.ReadLine());
+
+                room.IsBooked = true;
+                bookings.Add(new Booking
+                {
+                    Room = room,
+                    GuestName = guestName,
+                    StartDate = startDate,
+                    EndDate = endDate
+                });
+
+                Console.WriteLine("Zimmer erfolgreich gebucht!");
+            }
+            else
+            {
+                Console.WriteLine("Das Zimmer ist entweder nicht verfügbar oder existiert nicht.");
+            }
+
+            Console.WriteLine("\nDrücken Sie eine beliebige Taste, um zum Menü zurückzukehren.");
+            Console.ReadKey();
+        }
+    }
+}
+        
+
+
 
