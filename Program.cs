@@ -36,11 +36,9 @@
 
             List<Booking> bookings = new List<Booking>();
 
-
             // Menü anzeigen
             ShowMainMenu(rooms, bookings);
         }
-
         // Hauptmenü
         public static void ShowMainMenu(List<Room> rooms, List<Booking> bookings)
         {
@@ -48,13 +46,13 @@
             {
                 Console.Clear();
                 Console.WriteLine("Willkommen im Hotelbuchungssystem!");
-                Console.WriteLine("1. Zimmer anzeigen");
+                Console.WriteLine("\n1. Zimmer anzeigen");
                 Console.WriteLine("2. Zimmer buchen");
                 Console.WriteLine("3. Zimmer stornieren");
                 Console.WriteLine("4. Belegung anzeigen");
                 Console.WriteLine("5. Verfügbarkeit prüfen");
                 Console.WriteLine("6. Programm beenden");
-                Console.Write("Wählen Sie eine Option: ");
+                Console.Write("\nWählen Sie eine Option: ");
                 var choice = Console.ReadLine();
 
                 switch (choice)
@@ -132,6 +130,42 @@
                 Console.WriteLine("Das Zimmer ist entweder nicht verfügbar oder existiert nicht.");
             }
 
+            Console.WriteLine("\nDrücken Sie eine beliebige Taste, um zum Menü zurückzukehren.");
+            Console.ReadKey();
+        }
+
+        // Zimmer stornieren
+        public static void CancelBooking(List<Room> rooms, List<Booking> bookings)
+        {
+            Console.Clear();
+            Console.WriteLine("Zimmer stornieren:");
+            Console.Write("Geben Sie die Zimmernummer der Buchung ein, die Sie stornieren möchten: ");
+            int roomNumber = int.Parse(Console.ReadLine());
+            var booking = bookings.FirstOrDefault(b => b.Room.RoomNumber == roomNumber);
+            if (booking != null)
+            {
+                bookings.Remove(booking);
+                booking.Room.IsBooked = false;
+                Console.WriteLine("Buchung erfolgreich storniert!");
+            }
+            else
+            {
+                Console.WriteLine("Keine Buchung für dieses Zimmer gefunden.");
+            }
+
+            Console.WriteLine("\nDrücken Sie eine beliebige Taste, um zum Menü zurückzukehren.");
+            Console.ReadKey();
+        }
+
+        // Belegung anzeigen
+        public static void ShowOccupancy(List<Booking> bookings)
+        {
+            Console.Clear();
+            Console.WriteLine("Aktuelle Belegung:");
+            foreach (var booking in bookings)
+            {
+                Console.WriteLine($"Zimmernummer: {booking.Room.RoomNumber}, Gast: {booking.GuestName}, Zeitraum: {booking.StartDate.ToShortDateString()} bis {booking.EndDate.ToShortDateString()}");
+            }
             Console.WriteLine("\nDrücken Sie eine beliebige Taste, um zum Menü zurückzukehren.");
             Console.ReadKey();
         }
