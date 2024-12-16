@@ -88,9 +88,9 @@
             Console.WriteLine("Zimmer im Hotel:");
             foreach (var room in rooms)
             {
-                Console.WriteLine($"Zimmernummer: {room.RoomNumber}, Kategorie: {room.Category}, Preis: {room.Price:C}, Status: {(room.IsBooked ? "Gebucht" : "Verfügbar")}");
+                Console.WriteLine($"\nZimmernummer: {room.RoomNumber}, Kategorie: {room.Category}, Preis: {room.Price:C}, Status: {(room.IsBooked ? "Gebucht" : "Verfügbar")}");
             }
-            Console.WriteLine("\nDrücken Sie eine beliebige Taste, um zum Menü zurückzukehren.");
+            Console.WriteLine("\n\nDrücken Sie eine beliebige Taste, um zum Menü zurückzukehren.");
             Console.ReadKey();
         }
 
@@ -99,19 +99,19 @@
         {
             Console.Clear();
             Console.WriteLine("Zimmer buchen:");
-            Console.Write("Geben Sie die Zimmernummer ein, die Sie buchen möchten: ");
+            Console.Write("\nGeben Sie die Zimmernummer ein, die Sie buchen möchten: ");
             int roomNumber = int.Parse(Console.ReadLine());
 
             var room = rooms.FirstOrDefault(r => r.RoomNumber == roomNumber && !r.IsBooked);
             if (room != null)
             {
-                Console.Write("Geben Sie Ihren Namen ein: ");
+                Console.Write("\nGeben Sie Ihren Namen ein: ");
                 string guestName = Console.ReadLine();
 
-                Console.Write("Geben Sie das Startdatum der Buchung ein: ");
+                Console.Write("\nGeben Sie das Startdatum der Buchung ein (dd.mm.yyyy): ");
                 DateTime startDate = DateTime.Parse(Console.ReadLine());
 
-                Console.Write("Geben Sie das Enddatum der Buchung ein: ");
+                Console.Write("\nGeben Sie das Enddatum der Buchung ein (dd.mm.yyyy): ");
                 DateTime endDate = DateTime.Parse(Console.ReadLine());
 
                 room.IsBooked = true;
@@ -123,14 +123,14 @@
                     EndDate = endDate
                 });
 
-                Console.WriteLine("Zimmer erfolgreich gebucht!");
+                Console.WriteLine("\nZimmer erfolgreich gebucht!");
             }
             else
             {
                 Console.WriteLine("Das Zimmer ist entweder nicht verfügbar oder existiert nicht.");
             }
 
-            Console.WriteLine("\nDrücken Sie eine beliebige Taste, um zum Menü zurückzukehren.");
+            Console.WriteLine("\n\nDrücken Sie eine beliebige Taste, um zum Menü zurückzukehren.");
             Console.ReadKey();
         }
 
@@ -139,21 +139,21 @@
         {
             Console.Clear();
             Console.WriteLine("Zimmer stornieren:");
-            Console.Write("Geben Sie die Zimmernummer der Buchung ein, die Sie stornieren möchten: ");
+            Console.Write("\nGeben Sie die Zimmernummer der Buchung ein, die Sie stornieren möchten: ");
             int roomNumber = int.Parse(Console.ReadLine());
             var booking = bookings.FirstOrDefault(b => b.Room.RoomNumber == roomNumber);
             if (booking != null)
             {
                 bookings.Remove(booking);
                 booking.Room.IsBooked = false;
-                Console.WriteLine("Buchung erfolgreich storniert!");
+                Console.WriteLine("\nBuchung erfolgreich storniert!");
             }
             else
             {
                 Console.WriteLine("Keine Buchung für dieses Zimmer gefunden.");
             }
 
-            Console.WriteLine("\nDrücken Sie eine beliebige Taste, um zum Menü zurückzukehren.");
+            Console.WriteLine("\n\nDrücken Sie eine beliebige Taste, um zum Menü zurückzukehren.");
             Console.ReadKey();
         }
 
@@ -164,9 +164,43 @@
             Console.WriteLine("Aktuelle Belegung:");
             foreach (var booking in bookings)
             {
-                Console.WriteLine($"Zimmernummer: {booking.Room.RoomNumber}, Gast: {booking.GuestName}, Zeitraum: {booking.StartDate.ToShortDateString()} bis {booking.EndDate.ToShortDateString()}");
+                Console.WriteLine($"\nZimmernummer: {booking.Room.RoomNumber}, Gast: {booking.GuestName}, Zeitraum: {booking.StartDate.ToShortDateString()} bis {booking.EndDate.ToShortDateString()}");
             }
-            Console.WriteLine("\nDrücken Sie eine beliebige Taste, um zum Menü zurückzukehren.");
+            Console.WriteLine("\n\nDrücken Sie eine beliebige Taste, um zum Menü zurückzukehren.");
+            Console.ReadKey();
+        }
+
+        // Verfügbarkeit prüfen
+        public static void CheckAvailability(List<Room> rooms)
+        {
+            Console.Clear();
+            Console.Write("Geben Sie die Zimmernummer ein, die Sie auf Verfügbarkeit prüfen möchten: ");
+            int roomNumber = int.Parse(Console.ReadLine());
+
+            var room = rooms.FirstOrDefault(r => r.RoomNumber == roomNumber);
+            if (room != null)
+            {
+                Console.Write("\nGeben Sie das Startdatum der Prüfung ein (dd.mm.yyyy): ");
+                DateTime startDate = DateTime.Parse(Console.ReadLine());
+
+                Console.Write("\nGeben Sie das Enddatum der Prüfung ein (dd.mm.yyyy): ");
+                DateTime endDate = DateTime.Parse(Console.ReadLine());
+
+                if (room.IsBooked)
+                {
+                    Console.WriteLine($"\nZimmer {room.RoomNumber} ist für diesen Zeitraum nicht verfügbar.");
+                }
+                else
+                {
+                    Console.WriteLine($"\nZimmer {room.RoomNumber} ist für den angegebenen Zeitraum verfügbar.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("\nZimmer existiert nicht.");
+            }
+
+            Console.WriteLine("\n\nDrücken Sie eine beliebige Taste, um zum Menü zurückzukehren.");
             Console.ReadKey();
         }
     }
