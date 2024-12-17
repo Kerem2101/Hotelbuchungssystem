@@ -25,7 +25,7 @@
         }
         static void Main(string[] args)
         {
-            //Beispielzimmer erstellen
+            //auswählbare Beispielzimmer
             List<Room> rooms = new List<Room>
         {
             new Room { RoomNumber = 101, Category = "Einzelzimmer", Price = 50.00m, IsBooked = false },
@@ -75,7 +75,10 @@
                     case "6":
                         return;
                     default:
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Ungültige Auswahl. Versuchen Sie es erneut.");
+                        Console.ReadKey();
+                        Console.ResetColor();
                         break;
                 }
             }
@@ -88,7 +91,18 @@
             Console.WriteLine("Zimmer im Hotel:");
             foreach (var room in rooms)
             {
-                Console.WriteLine($"\nZimmernummer: {room.RoomNumber}, Kategorie: {room.Category}, Preis: {room.Price:C}, Status: {(room.IsBooked ? "Gebucht" : "Verfügbar")}");
+                Console.Write($"\nZimmernummer: {room.RoomNumber}, Kategorie: {room.Category}, Preis: {room.Price:C}, Status: ");
+                if (room.IsBooked)
+                { 
+                    Console.ForegroundColor = ConsoleColor.Red; 
+                    Console.WriteLine("Gebucht"); 
+                }
+                else 
+                { 
+                    Console.ForegroundColor = ConsoleColor.Green; 
+                    Console.WriteLine("Verfügbar"); 
+                }
+                Console.ResetColor();
             }
             Console.WriteLine("\n\nDrücken Sie eine beliebige Taste, um zum Menü zurückzukehren.");
             Console.ReadKey();
@@ -127,6 +141,7 @@
             }
             else
             {
+                Console.Clear();
                 Console.WriteLine("Das Zimmer ist entweder nicht verfügbar oder existiert nicht.");
             }
 
@@ -150,6 +165,7 @@
             }
             else
             {
+                Console.Clear();
                 Console.WriteLine("Keine Buchung für dieses Zimmer gefunden.");
             }
 
